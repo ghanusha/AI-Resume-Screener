@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+    <div>
+        <h2 class="fw-bold text-primary">Dashboard</h2>
+        <p class="text-muted mb-0">Analysis history for {{ session['username'] }}</p>
+    </div>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary shadow-sm"><i class="bi bi-plus-circle"></i> Analyze New Resume</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Analysis Date</th>
+                        <th>Status</th>
+                        <th>Score</th>
+                        <th class="text-end pe-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if candidates %}
+                        {% for candidate in candidates %}
+                        <tr>
+                            <td class="ps-4 fw-bold">#{{ candidate['id'] }}</td>
+                            <td><span class="text-muted">{{ candidate['date'] }}</span></td>
+                            <td>
+                                {% if candidate['status'] == 'Excellent' %}
+                                    <span class="badge bg-success rounded-pill px-3 py-2">{{ candidate['status'] }}</span>
+                                {% elif candidate['status'] == 'Good' %}
+                                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2">{{ candidate['status'] }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger rounded-pill px-3 py-2">{{ candidate['status'] }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress me-2 rounded-pill" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar 
+                                            {% if candidate['score'] >= 75 %}bg-success
+                                            {% elif candidate['score'] >= 50 %}bg-warning
+                                            {% else %}bg-danger{% endif %}" 
+                                            role="progressbar" 
+                                            style="width: {{ candidate['score'] }}%;" 
+                                            aria-valuenow="{{ candidate['score'] }}" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <span class="fw-bold text-muted small">{{ candidate['score'] }}%</span>
+                                </div>
+                            </td>
+                            <td class="text-end pe-4">
+                                <a href="{{ url_for('result', candidate_id=candidate['id']) }}" class="btn btn-sm btn-outline-primary">View Report</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <h5 class="text-muted mb-3">No resumes analyzed yet.</h5>
+                                <a href="{{ url_for('upload') }}" class="btn btn-outline-primary mt-2">Upload First Resume</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

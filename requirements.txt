@@ -1,0 +1,6 @@
+flask
+gunicorn
+PyPDF2
+docx2txt
+spacy
+werkzeug

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row w-100 justify-content-center">
+    <div class="col-md-10">
+        <div class="hero-section">
+            <h1 class="hero-title">Screen Resumes in Seconds</h1>
+            <p class="hero-subtitle">Automate your hiring process with our AI-powered resume parser and skill matching engine.</p>
+            {% if 'username' in session %}
+                <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg mt-3">Start Screening Now</a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg mt-3">Get Started for Free</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg mt-3 ms-2">Login</a>
+            {% endif %}
+        </div>
+        
+        <div class="row mt-5 text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4">
+                    <h3 class="fw-bold mb-3" style="font-size: 2.5rem; color: var(--primary-color);">1</h3>
+                    <h4 class="fw-bold">Upload Resume</h4>
+                    <p class="text-muted">Upload any candidate's resume in PDF or DOCX format.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4">
+                    <h3 class="fw-bold mb-3" style="font-size: 2.5rem; color: var(--primary-color);">2</h3>
+                    <h4 class="fw-bold">Define Skills</h4>
+                    <p class="text-muted">Enter the exact job skills and requirements you are looking for.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4">
+                    <h3 class="fw-bold mb-3" style="font-size: 2.5rem; color: var(--primary-color);">3</h3>
+                    <h4 class="fw-bold">Get Matches</h4>
+                    <p class="text-muted">Our system calculates a percentage score and extracts matching data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

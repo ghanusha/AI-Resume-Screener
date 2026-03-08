@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Back to Dashboard</a>
+        <h2 class="fw-bold text-primary">Candidate Review</h2>
+        <p class="text-muted">Result ID: {{ candidate['id'] }} | Analyzed on {{ candidate['date'] }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Score Section -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0 bg-white">
+            <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                <h5 class="text-uppercase fw-bold text-muted mb-4">Match Score</h5>
+                <h1 class="display-1 fw-bold mb-3
+                    {% if candidate['score'] >= 75 %}text-success
+                    {% elif candidate['score'] >= 50 %}text-warning
+                    {% else %}text-danger{% endif %}">
+                    {{ candidate['score'] }}<span class="fs-4">%</span>
+                </h1>
+                
+                <h4 class="fw-bold">
+                    Status: <span class="
+                    {% if candidate['status'] == 'Excellent' %}text-success
+                    {% elif candidate['status'] == 'Good' %}text-warning
+                    {% else %}text-danger{% endif %}">{{ candidate['status'] }}</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Skills Breakdown -->
+    <div class="col-md-8 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="fw-bold border-bottom pb-2 mb-4">Skill Analysis</h4>
+                
+                <div class="mb-4">
+                    <h6 class="fw-bold text-muted mb-3 d-flex justify-content-between align-items-center">
+                        Matched Skills ({{ matched_skills|length }})
+                        <span class="badge bg-success rounded-pill">{{ matched_skills|length }} matches</span>
+                    </h6>
+                    <div>
+                        {% if matched_skills %}
+                            {% for skill in matched_skills %}
+                                <span class="badge badge-skill badge-matched">{{ skill|upper }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted fst-italic">No required skills matched.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <h6 class="fw-bold text-muted mb-3 d-flex justify-content-between align-items-center">
+                        Missing Skills ({{ missing_skills|length }})
+                        <span class="badge bg-danger rounded-pill">{{ missing_skills|length }} missed</span>
+                    </h6>
+                    <div>
+                        {% if missing_skills %}
+                            {% for skill in missing_skills %}
+                                <span class="badge badge-skill badge-missing">{{ skill|upper }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-success fw-bold"><i class="bi bi-check-circle"></i> Candidate possesses all required skills!</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mt-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h5 class="fw-bold border-bottom pb-2 mb-3">Extracted Resume Keywords</h5>
+                <div>
+                    {% if resume_skills %}
+                        {% for skill in resume_skills %}
+                            <span class="badge badge-skill bg-secondary">{{ skill|upper }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted fst-italic">No standard skills identified in the resume.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

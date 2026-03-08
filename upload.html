@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
+                <h2 class="fw-bold text-primary">Upload Resume</h2>
+                <p class="text-muted">Upload a candidate's resume and specify required skills</p>
+            </div>
+            <div class="card-body px-5 pb-5">
+                <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                    
+                    <div class="mb-4">
+                        <label for="job_skills" class="form-label fw-bold">Required Job Skills</label>
+                        <textarea class="form-control" id="job_skills" name="job_skills" rows="3" placeholder="e.g. Java, Python, SQL, React, AWS (Comma separated)" required></textarea>
+                        <div class="form-text">Enter skills separated by commas. Our system will extract these exact skills.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="resume" class="form-label fw-bold">Candidate Resume (PDF or DOCX)</label>
+                        <input class="form-control form-control-lg" type="file" id="resume" name="resume" accept=".pdf,.docx" required>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            <span id="btnText">Analyze Resume</span>
+                            <span id="loading-spinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function() {
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('btnText').innerText = 'Processing...';
+        document.getElementById('loading-spinner').style.display = 'inline-block';
+    });
+</script>
+{% endblock %}
