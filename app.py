@@ -24,7 +24,9 @@ init_db()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+@app.route("/")
+def home():
+    return "Hello"
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -159,4 +161,5 @@ def result(candidate_id):
                            missing_skills=json.loads(candidate['missing']))
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port=int(os.environ.get("PORT",10000))
+    app.run(host="0.0.0.0", port=port)
